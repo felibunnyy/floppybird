@@ -11,6 +11,8 @@ public class LogicScript : MonoBehaviour
     public GameObject gameOverScreen;
     public bool isGameOver = false;
     public AudioSource passSFX;
+    public int highScore;
+    public Text highScoreText;
 
     // Start is called before the first frame update
     [ContextMenu("Increase Score")]
@@ -26,19 +28,39 @@ public class LogicScript : MonoBehaviour
     }
 
     public void restartGame() {
+        Debug.Log("restartGame entered");
+        Debug.Log(PlayerPrefs.GetInt("highScore", 0));
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     
     void Start()
     {
-        passSFX = GetComponent<AudioSource>();
-        
+        passSFX = GetComponent<AudioSource>();  
+        initHighScore();      
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        updateHighScore();
+    }
+
+    public void initHighScore() {
+        highScoreText.text = PlayerPrefs.GetInt("highScore", 0).ToString();
+        highScore = PlayerPrefs.GetInt("highScore", 0);
+        highScoreText.text = "High Score: " + highScoreText.text;
+    }
+
+    public void updateHighScore() {
+        if (playerScore > highScore) {
+            highScore = playerScore;
+            PlayerPrefs.SetInt("highScore", playerScore);
+            highScoreText.text = "High Score: " + highScore.ToString();
+        }
+    }
+
+    public void Reset() {
+        PlayerPrefs.DeleteKey("highScore");
     }
 }
