@@ -9,7 +9,7 @@ public class StartGameScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        PlayerPrefs.DeleteKey("highScore");
     }
 
     // Update is called once per frame
